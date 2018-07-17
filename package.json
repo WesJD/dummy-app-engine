@@ -1,0 +1,19 @@
+{
+    "name": "dummy-app-engine",
+    "version": "1.0.0",
+    "description": "Template engine for students to use in Biotechnology",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/WesJD/dummy-app-engine.git"
+    },
+    "author": "Wesley Smith",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/WesJD/dummy-app-engine/issues"
+    },
+    "homepage": "https://github.com/WesJD/dummy-app-engine#readme"
+}

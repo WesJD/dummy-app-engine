@@ -1,4 +1,4 @@
-*.iml
-.idea/
-target/
-dependency-reduced-pom.xml
+node_modules
+client/node_modules
+server/node_modules
+server/npm-debug.log

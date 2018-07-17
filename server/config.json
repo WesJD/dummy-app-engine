@@ -1,0 +1,27 @@
+{
+    "port": 3000,
+    "session": {
+        "secret": "mrmcsecretiamverysecretbois",
+        "saveUninitialized": false,
+        "resave": false
+    },
+    "passport": {
+        "google": {
+            "clientID": "534983381773-d1or7bvubv7d2kh7c3h873eidba780vh.apps.googleusercontent.com",
+            "clientSecret": "vOEUdEHusKyp9rfz6_z9tDnv",
+            "callbackURL": "http://biotech.wesjd.net:3000/auth/google/callback"
+        }
+    },
+    "mysql": {
+        "host": "localhost",
+        "user": "wesley",
+        "password": "wesley",
+        "database": "biotech",
+        "prettyError": true,
+        "stdoutErrors": false,
+        "TTL": 0,
+        "connectionLimit": 100,
+        "caching": true,
+        "cacheProvider": "LRU"
+    }
+}
