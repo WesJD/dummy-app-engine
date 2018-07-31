@@ -1,0 +1,28 @@
+#nav-container {
+    padding-bottom: 2%;
+}
+
+.navbar {
+    background-color: rgba(0,0,0,0.8);
+}
+
+.navbar .navbar-brand {
+    text-align: center;
+    display: block;
+    width: 100%;
+}
+
+.navbar .navbar-brand > .navbar-item,
+.navbar .navbar-brand .navbar-link {
+  display: inline-block;
+}
+
+.navbar-item {
+    color: hsl(204, 86%, 53%);
+}
+
+.navbar #name {
+    font-family: "Bungee Inline";
+    font-size: 1.7em;
+    color: rgb(224, 216, 67);
+}
