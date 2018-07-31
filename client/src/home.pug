@@ -1,1 +1,25 @@
-p Hey!
+doctype html
+html
+    head
+        title Projects
+        include includes/styles.pug
+        +sheet("styles/home.css")
+        include includes/scripts.pug
+    body
+        include includes/navbar.pug
+        .container#cards
+            each project in projects
+                .card-wrap
+                    .card
+                        header.card-header
+                            span.card-header-title= project.name
+                        .card-content
+                            .content= project.description
+                        footer.card-footer
+                            a.card-footer-item(href="") Edit >
+                            a.card-footer-item.has-background-danger.has-text-white-ter(href="") Delete >
+            .card-wrap#add
+                a(href="")
+                    i.fas.fa-plus
+                    span New Project
+                    
