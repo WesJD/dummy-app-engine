@@ -2,7 +2,6 @@ import passport from "passport/lib"
 import { OAuth2Strategy as GoogleStrategy } from "passport-google-oauth/lib"
 import { mysql } from "./data/database"
 import { getDebugger } from "./utils/debugutil"
-import { User } from "./data/user"
 import { config } from "./server"
 
 const debug = getDebugger("passport")
@@ -18,23 +17,12 @@ export function setupPassport() {
                     if (err) {
                         debug("Couldn't update profile information!", err)
                         done(err)
-                    } else done(null, new User(profile.id, profile.displayName))
+                    } else done(null, profile)
                 }
             )
         })
     }))
 
-    passport.serializeUser((user, done) => done(null, user.id))
-    passport.deserializeUser((id, done) => {
-        mysql.query(
-            "SELECT name FROM accounts WHERE id = ?",
-            [id],
-            (err, res) => {
-                if (err) {
-                    debug("Couldn't get profile information!", err)
-                    done(err)
-                } else done(null, new User(id, res[0].name))
-            }
-        )
-    })
+    passport.serializeUser((user, done) => done(null, user))
+    passport.deserializeUser((id, done) => done(null, id))
 }

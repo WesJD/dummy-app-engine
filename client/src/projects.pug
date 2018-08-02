@@ -1,0 +1,44 @@
+doctype html
+html
+    head
+        title Projects
+        include includes/styles.pug
+        +sheet("styles/projects.css")
+        include includes/scripts.pug
+        +script("scripts/projects.js")
+    body
+        include includes/navbar.pug
+        .container#cards
+            each project in projects
+                .card-wrap
+                    .card
+                        header.card-header
+                            span.card-header-title= project.name
+                        .card-content
+                            .content= project.description
+                        footer.card-footer
+                            a.card-footer-item(href="/project/edit?hash=" + project.hash) Edit >
+                            a.card-footer-item.has-background-danger.has-text-white-ter(href="") Delete
+            .card-wrap#add
+                a(onclick="toggleNewProject();")
+                    i.fas.fa-plus
+                    span New Project >
+        .modal
+            .modal-background
+            .modal-card
+                header.modal-card-head
+                    span.modal-card-title New Project
+                .modal-card-body
+                    label.label Name
+                    .field
+                        input.input.is-danger#nameinput(type="text" placeholder="The best project ever")
+                        span.help.is-danger This field is required
+                    label.label Description
+                    .field
+                        textarea.textarea(placeholder="Project description" rows="2")#descinput A project
+                footer.modal-card-foot
+                    a.button.is-success(onclick="submitProject();"  disabled)#newsubmit Submit
+                    a.button(onclick="toggleNewProject();") Cancel
+        
+
+                    

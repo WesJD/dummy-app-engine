@@ -1,12 +1,11 @@
 import { Router } from "express"
 
-export function getAuthorizedRouter() {
+export function getAuthorizedRouter(noRedirect) {
     const router = Router()
-    router.use(authorizeMiddleware)
+    router.use((req, res, next) => {
+        if (req.session.user) next()
+        else if (noRedirect) res.status(401).send("Unauthorized.")
+        else res.redirect("/")
+    })
     return router
-}
-
-function authorizeMiddleware(req, res, next) {
-    if (req.isAuthenticated()) next()
-    else res.redirect("/")
 }
