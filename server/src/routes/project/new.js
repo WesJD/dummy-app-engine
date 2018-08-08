@@ -2,6 +2,7 @@ import { getDebugger } from "../../utils/debugutil"
 import { getAuthorizedRouter } from "../../utils/routerutil"
 import crypto from "crypto"
 import { mysql } from "../../data/database"
+import { createNewScreen } from "./modify/screen";
 
 const debug = getDebugger("project:new")
 const router = getAuthorizedRouter(true)
@@ -17,12 +18,19 @@ router.post("/", (req, res) => {
         mysql.query(
             `INSERT INTO projects (hash, owner, name, description) VALUES (?,?,?,?)`,
             [hash, req.session.user.id, name, description],
-            (err, result) => {
+            err => {
                 if (err) {
                     debug("Couldn't create project!", err)
                     res.status(500).send()
                 } else {
-                    req.session.projects.push({ hash, name, description })
+                    const project = {
+                        hash,
+                        name,
+                        description,
+                        screens: []
+                    }
+                    createNewScreen(project)
+                    req.session.projects.push(project)
                     res.status(200).send(hash)
                 }
             }

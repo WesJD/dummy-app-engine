@@ -1,0 +1,125 @@
+:root {
+    --unselected-color: rgb(190, 190, 190);
+    --hover-background: rgba(185, 184, 184, 0.219);
+    --selected-color: rgb(116, 114, 114);
+    --selected-background: rgba(94, 94, 94, 0.219);
+}
+
+#nav-container {
+    padding-bottom: 0;
+}
+
+html, body {
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+}
+
+#area {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    height: 100%;
+}
+
+#screenviews {
+    flex: 0 1 auto;
+
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    overflow-y: auto;
+
+    height: 100%;
+    width: 140px;
+
+    border-right: 1px solid grey;
+}
+
+.viewholder {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-end;
+    flex-shrink: 0;
+
+    width: 100px;
+    
+    padding: 0.5vh;
+    margin: 7%;
+}
+
+.viewholder.selected, .viewholder.selected:hover {
+    background-color: var(--selected-background);
+}
+
+.viewholder:hover {
+    background-color: var(--hover-background);
+}
+
+.index {
+    font-weight: bold;
+    font-size: 0.8em;
+    color: var(--unselected-color);
+
+    margin-right: 10%;
+}
+
+.selected .index {
+    color: var(--selected-color);
+}
+
+.screenview {
+    border-radius: 7px;
+    border: 3px solid var(--unselected-color);
+    height: 112px;
+    width: 63px;
+    padding: 4%;
+}
+
+.selected .screenview {
+    border-color: var(--selected-color);
+}
+
+.viewport {
+    background-color: lightgray;
+
+    margin: 0.5% 5%;
+    margin-bottom: 0;
+
+    height: 688px;
+    width: 387px;
+
+    overflow: auto;
+
+    border-radius: 20px;
+    border: 5px solid grey;
+}
+
+.mapper {
+    flex: 0 1 auto;
+    width: 40%;
+    max-width: 400px;
+    padding: 1%;
+}
+
+.editor {
+    flex: 1 1 auto;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+}
+
+.hidden {
+    display: none;
+}
+
+.newDropdown, .newDropdown .dropdown-trigger, .newDropdown .dropdown-menu {
+    width: 100%;
+}
+
+.newscreen {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    flex-flow: column wrap;
+}

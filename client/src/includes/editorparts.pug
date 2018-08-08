@@ -1,0 +1,33 @@
+mixin editarea(screen, index)
+    .editor.hidden
+        .viewport
+        .mapper
+            nav.panel
+                p.panel-heading Manage Elements
+                a.panel-block
+                    .panel-icon
+                        i.fas.fa-edit
+                    span element 1
+                .panel-block
+                    .dropdown.newDropdown
+                        .dropdown-trigger
+                            button.button.is-link.is-outlined.is-fullwidth(aria-haspopup="true" aria-controls="dropdown-menu")
+                                i.fas.fa-plus
+                                span.space-from-icon New Element
+                        .dropdown-menu#dropdown-menu(role="menu")
+                            .dropdown-content
+                                a.dropdown-item
+                                    i.fas.fa-keyboard
+                                    span.space-from-icon Input field
+                                a.dropdown-item
+                                    i.fas.fa-align-left
+                                    span.space-from-icon Text box
+                                a.dropdown-item
+                                    i.fas.fa-image
+                                    span.space-from-icon Background
+
+mixin screenview(screen, index)
+    .viewholder(onclick="select(" + index + ");")
+        span.index.is-pulled-right= index+1
+        .screenview.is-pulled-right
+            p screen

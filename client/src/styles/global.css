@@ -2,3 +2,11 @@ html {
     background-color: #F7F7F7;
     overflow: auto;
 }
+
+.space-from-icon {
+    padding-left: 7px;
+}
+
+i.fas {
+    width: 15px;
+}

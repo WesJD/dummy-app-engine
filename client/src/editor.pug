@@ -1,0 +1,20 @@
+doctype html
+html
+    head
+        title Edit
+        include includes/styles.pug
+        +sheet("/styles/editor.css")
+        include includes/scripts.pug
+        +script("/scripts/editor.js")
+    body
+        include includes/navbar.pug
+        #area
+            include includes/editorparts.pug
+            #screenviews
+                each screen, index in project.screens
+                    +screenview(screen, index)
+                a.viewholder.newscreen(onclick="newScreen();")
+                    i.fas.fa-plus
+                    span New Screen
+            each screen, index in project.screens
+                +editarea(screen, index)

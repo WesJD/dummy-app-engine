@@ -17,7 +17,7 @@ html
                         .card-content
                             .content= project.description
                         footer.card-footer
-                            a.card-footer-item(href="/project/edit?hash=" + project.hash) Edit >
+                            a.card-footer-item(href="/project/editor?hash=" + project.hash) Edit >
                             a.card-footer-item.has-background-danger.has-text-white-ter(href="") Delete
             .card-wrap#add
                 a(onclick="toggleNewProject();")

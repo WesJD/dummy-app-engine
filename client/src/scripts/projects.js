@@ -1,9 +1,7 @@
 "use strict"
 
 function toggleNewProject() {
-    const classList = document.getElementsByClassName("modal")[0].classList
-    if (classList.contains("is-active")) classList.remove("is-active")
-    else classList.add("is-active")
+    document.getElementsByClassName("modal")[0].classList.toggle("is-active")
 }
 
 function submitProject() {
@@ -26,7 +24,7 @@ function submitProject() {
         } else throw new Error("Not ok :(")
     }).then(text => {
         console.log(text)
-        window.location.href = "/project/edit?hash=" + text
+        window.location.href = "/project/editor?hash=" + text
     }).catch(err => console.log("Couldn't send request", err))
 }
 
