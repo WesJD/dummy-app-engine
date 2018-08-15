@@ -3,6 +3,7 @@ import { getAuthorizedRouter } from "../../utils/routerutil"
 import crypto from "crypto"
 import { mysql } from "../../data/database"
 import { createNewScreen } from "./modify/screen";
+import { createNewElement } from "./modify/element";
 
 const debug = getDebugger("project:new")
 const router = getAuthorizedRouter(true)

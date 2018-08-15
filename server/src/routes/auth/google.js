@@ -17,12 +17,14 @@ router.get(
 
         mysql.query(
             `
-            SELECT projects.hash, projects.name, projects.description, screens.hash AS screen_hash, screens.place 
-            FROM projects 
-            LEFT JOIN screens 
-            ON screens.project = projects.hash 
+            SELECT projects.hash, projects.name, projects.description, screens.hash AS screen_hash, screens.place,
+                   elements.hash AS element_hash, elements.type, elements.x, elements.y, elements.width, elements.height,
+                   elements.color, elements.url, elements.text
+            FROM projects
+            LEFT JOIN screens ON screens.project = projects.hash
+            LEFT JOIN elements ON elements.screen = screens.hash
             WHERE projects.owner = ?
-            ORDER BY screens.place ASC
+            ORDER BY projects.hash, screens.place ASC
             `,
             [req.session.user.id],
             (err, results) => {
@@ -32,7 +34,6 @@ router.get(
                 } else {
                     debug("results", JSON.stringify(results))
 
-                    outer:
                     for (let i = 0; i < results.length; i++) {
                         const result = results[i]
                         const project = {
@@ -42,19 +43,51 @@ router.get(
                             screens: []
                         }
 
-                        function insertScreen(result) {
+                        function insertScreen(result, elements) {
                             project.screens.push({
-                                hash: result.hash,
-                                place: result.place
+                                hash: result.screen_hash,
+                                place: result.place,
+                                elements
                             })
                         }
 
-                        insertScreen(result)
-                        for (let j = i; j < results.length; j++) {
+                        let j
+                        for (j = i; j < results.length; j++) {
                             const lowerResult = results[j]
-                            if (lowerResult.hash != result.hash) continue outer;
-                            insertScreen(lowerResult)
+                            if (lowerResult.hash != result.hash) {
+                                j--
+                                break
+                            }
+
+                            const elements = []
+                            for (let k = j; k < results.length; k++) {
+                                const evenLowerResult = results[k]
+                                if (evenLowerResult.screen_hash != lowerResult.screen_hash) {
+                                    k--
+                                    break
+                                }
+
+                                elements.push({
+                                    hash: result.element_hash,
+                                    type: result.type,
+                                    x: result.x,
+                                    y: result.y,
+                                    width: result.width,
+                                    height: result.height,
+                                    color: result.color,
+                                    url: result.url,
+                                    text: result.text
+                                })
+
+                                j = k
+                            }
+                            debug("elements", JSON.stringify(elements))
+
+                            insertScreen(lowerResult, elements)
                         }
+
+                        projects.push(project)
+                        i = j
                     }
 
                     res.redirect("/projects")

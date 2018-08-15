@@ -2,19 +2,22 @@ import { getAuthorizedRouter } from "../../../utils/routerutil"
 import pug from "pug"
 import { mysql } from "../../../data/database"
 import { getDebugger } from "../../../utils/debugutil"
-import crypto from "crypto"
-import { server } from "../../../server";
+import { server } from "../../../server"
+import { newUniqueHash } from "../../../utils/hashutil"
+import { createNewElement } from "./element";
 
 const router = getAuthorizedRouter(true)
 const debug = getDebugger("screen")
 
 router.post("/", (req, res) => {
     const project = req.session.projects.find(project => project.hash == req.query.hash)
-    const locals = createNewScreen(project)
+    if (project) {
+        const locals = createNewScreen(project)
 
-    const screenview = pug.renderFile(server.get("views") + "/server/screenview.pug", locals)
-    const editarea = pug.renderFile(server.get("views") + "/server/editarea.pug", locals)
-    res.json({ screenview, editarea }).status(200).send()
+        const screenview = pug.renderFile(server.get("views") + "/server/screenview.pug", locals)
+        const editarea = pug.renderFile(server.get("views") + "/server/editarea.pug", locals)
+        res.json({ screenview, editarea }).status(200).send()
+    } else res.status(403)
 })
 
 router.delete("/", (req, res) => {
@@ -22,15 +25,10 @@ router.delete("/", (req, res) => {
 })
 
 export function createNewScreen(project) {
-    const hash = crypto.createHash("sha1").update(Date.now().toString() + Math.random()).digest("hex")
+    const hash = newUniqueHash()
     const screen = {
         hash,
-        elements: [
-            {
-                type: "background",
-                color: "lightgrey"
-            }
-        ]
+        elements: []
     }
     const index = screen.place = project.screens.push(screen) - 1
 
@@ -43,6 +41,8 @@ export function createNewScreen(project) {
             if (err) debug("Couldn't create new screen", err)
         }
     )
+
+    createNewElement(screen, "background")
 
     return { screen, index }
 }

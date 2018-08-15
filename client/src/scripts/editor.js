@@ -1,17 +1,19 @@
+"use strict"
+
 const projectHash = window.location.href.split("=")[1]
-console.log(projectHash)
 
 let viewholders
 let editors
 let selectedIndex
 
-window.onload = () => {
+document.addEventListener("DOMContentLoaded", event => {
     reloadCache()
 
     const dropdowns = document.getElementsByClassName("newDropdown")
     for (const dropdown of dropdowns) {
         addDropdownListener(dropdown)
     }
+
     document.addEventListener("click", () => {
         for (const dropdown of dropdowns) {
             dropdown.classList.remove("is-active")
@@ -19,20 +21,36 @@ window.onload = () => {
     })
 
     select(0, false)
-}
+})
 
 function select(index, unsetOld = true) {
     if (index == selectedIndex) return
 
     if (unsetOld) {
         viewholders[selectedIndex].classList.remove("selected")
-        editors[selectedIndex].classList.add("hidden")
+
+        const editor = editors[selectedIndex]
+        for (const element of getElementsOfEditor(editor)) {
+            element.onmousedown = null
+        }
+        editor.classList.add("hidden")
+    }
+
+    const editor = editors[index]
+    editor.classList.remove("hidden")
+    const elements = getElementsOfEditor(editor)
+    for (const element of elements) {
+        makeDraggable(element)
     }
 
     viewholders[index].classList.add("selected")
-    editors[index].classList.remove("hidden")
 
     selectedIndex = index
+}
+
+function getElementsOfEditor(editor) {
+    const viewport = editor.getElementsByClassName("viewport")[0]
+    return viewport.getElementsByClassName("element")
 }
 
 function addDropdownListener(dropdown) {
@@ -64,5 +82,55 @@ function newScreen() {
 
         reloadCache()
         select(editors.length - 1)
-    })
+    }).catch(err => console.log(err))
+}
+
+function newElement(screenHash, type) {
+    fetch(
+        `/project/modify/element?project=${projectHash}&screen=${screenHash}&type=${type}`,
+        {
+            "method": "POST",
+            "credentials": "include"
+        }
+    ).then(res => {
+        if (res.ok) {
+            return res.json()
+        } else throw new Error("Couldn't create element!")
+    }).then(renderedHtml => {
+        for (const editor of editors) {
+            const hash = editor.getAttribute("hash")
+            if (hash == screenHash) {
+                const mapper = editor.getElementsByClassName("mapper")[0]
+                const panel = mapper.getElementsByClassName("panel")[0]
+                const panelBlocks = panel.getElementsByClassName("panel-block")
+                panelBlocks[panelBlocks.length - 1].insertAdjacentHTML("beforebegin", renderedHtml.rendered)
+            }
+        }
+    }).catch(err => console.log(err))
+}
+
+function makeDraggable(element) {
+    const viewportBounds = element.parentElement.getBoundingClientRect()
+    element.onmousedown = event => {
+        event = event || window.event
+        event.preventDefault()
+
+        const bounds = element.getBoundingClientRect()
+        const spaceX = event.clientX - bounds.left
+        const spaceY = event.clientY - bounds.top
+
+        document.onmouseup = () => {
+            //TODO submit new location to server
+
+            document.onmouseup = null
+            document.onmousemove = null
+        }
+        document.onmousemove = event => {
+            event = event || window.event
+            event.preventDefault()
+
+            element.style.marginLeft = ((event.clientX - viewportBounds.left) - spaceX) + "px"
+            element.style.marginTop = ((event.clientY - viewportBounds.top) - spaceY) + "px"
+        }
+    }
 }

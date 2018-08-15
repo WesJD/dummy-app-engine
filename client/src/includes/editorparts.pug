@@ -1,13 +1,22 @@
+mixin manageElement(type, name)
+    a.panel-block
+        .panel-icon
+            i.fas.fa-edit
+        span= "type-" + type + " named " + name
+
+mixin element(element)
+    .element(style="margin-left:" + element.x + "px; margin-top:" + element.y + "px; width:" + element.width + "px; height:" + element.height + "px; background-color:red;")
+
 mixin editarea(screen, index)
-    .editor.hidden
+    .editor(hash=screen.hash).hidden
         .viewport
+            each element in screen.elements
+                +element(element)
         .mapper
             nav.panel
                 p.panel-heading Manage Elements
-                a.panel-block
-                    .panel-icon
-                        i.fas.fa-edit
-                    span element 1
+                each element in screen.elements
+                    +manageElement(element.type, element.hash)
                 .panel-block
                     .dropdown.newDropdown
                         .dropdown-trigger
@@ -16,13 +25,13 @@ mixin editarea(screen, index)
                                 span.space-from-icon New Element
                         .dropdown-menu#dropdown-menu(role="menu")
                             .dropdown-content
-                                a.dropdown-item
+                                a.dropdown-item(onclick="newElement(\"" + screen.hash + "\", \"inputfield\");")
                                     i.fas.fa-keyboard
                                     span.space-from-icon Input field
-                                a.dropdown-item
+                                a.dropdown-item(onclick="newElement(\"" + screen.hash + "\", \"textbox\");")
                                     i.fas.fa-align-left
                                     span.space-from-icon Text box
-                                a.dropdown-item
+                                a.dropdown-item(onclick="newElement(\"" + screen.hash + "\", \"background\");")
                                     i.fas.fa-image
                                     span.space-from-icon Background
 
