@@ -1,22 +1,20 @@
 {
-  "name": "server",
-  "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "server": "DEBUG=engine:* node --use_strict src/boot.js"
-  },
-  "license": "ISC",
-  "dependencies": {
-    "babel-preset-env": "^1.7.0",
-    "babel-register": "^6.26.0",
-    "body-parser": "^1.18.3",
-    "debug": "^3.1.0",
-    "express": "^4.16.3",
-    "express-session": "^1.15.6",
-    "mysql-cache": "^2.1.2",
-    "node-fetch": "^2.2.0",
-    "passport": "^0.4.0",
-    "passport-google-oauth": "^1.0.0",
-    "pug": "^2.0.3"
-  }
+    "name": "server",
+    "version": "1.0.0",
+    "scripts": {
+        "server": "cd ../client && npm run convert && cd ../server && DEBUG=engine:* node --use_strict src/boot.js"
+    },
+    "dependencies": {
+        "babel-preset-env": "^1.7.0",
+        "babel-register": "^6.26.0",
+        "body-parser": "^1.18.3",
+        "debug": "^3.1.0",
+        "express": "^4.16.3",
+        "express-session": "^1.15.6",
+        "mysql-cache": "^2.1.2",
+        "node-fetch": "^2.2.0",
+        "passport": "^0.4.0",
+        "passport-google-oauth": "^1.0.0",
+        "pug": "^2.0.3"
+    }
 }

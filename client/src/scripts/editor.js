@@ -110,7 +110,9 @@ function newElement(screenHash, type) {
 }
 
 function makeDraggable(element) {
-    const viewportBounds = element.parentElement.getBoundingClientRect()
+    const viewport = element.parentElement
+    const viewportBounds = viewport.getBoundingClientRect()
+
     element.onmousedown = event => {
         event = event || window.event
         event.preventDefault()
@@ -129,8 +131,13 @@ function makeDraggable(element) {
             event = event || window.event
             event.preventDefault()
 
-            element.style.marginLeft = ((event.clientX - viewportBounds.left) - spaceX) + "px"
-            element.style.marginTop = ((event.clientY - viewportBounds.top) - spaceY) + "px"
+            const newX = Math.min(Math.max(0, (event.clientX - viewportBounds.left) - spaceX), (viewport.offsetWidth - 5) - element.offsetWidth)
+            console.log(newX)
+            console.log(viewportBounds.width)
+            const newY = Math.min(Math.max(0, (event.clientY - viewportBounds.top) - spaceY), (viewport.offsetHeight - 5) - element.offsetHeight)
+
+            element.style.marginLeft = newX + "px"
+            element.style.marginTop = newY + "px"
         }
     }
 }

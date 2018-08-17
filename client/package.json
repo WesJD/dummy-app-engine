@@ -1,9 +1,12 @@
 {
     "name": "client",
     "version": "1.0.0",
-    "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "convert": "node node_modules/babel-cli/bin/babel.js src --out-dir bin --copy-files"
     },
-    "license": "ISC"
+    "dependencies": {
+        "babel-cli": "^6.26.0",
+        "babel-preset-env": "^1.7.0",
+        "babel-preset-minify": "^0.4.3"
+    }
 }

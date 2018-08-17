@@ -9,7 +9,7 @@ import { urlencoded } from "body-parser"
 
 export const config = require("../config.json")
 const debug = getDebugger("server")
-const clientDirectory = __dirname + "/../../client/src"
+const clientDirectory = __dirname + "/../../client/bin"
 
 setupDatabase()
 setupPassport()
