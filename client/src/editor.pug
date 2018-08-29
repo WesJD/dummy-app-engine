@@ -5,7 +5,10 @@ html
         include includes/styles.pug
         +sheet("/styles/editor.css")
         include includes/scripts.pug
-        +script("/scripts/editor.js")
+        +script("/scripts/editor/globals.js")
+        +script("/scripts/editor/dragability.js")
+        +script("/scripts/editor/screens.js")
+        +script("/scripts/editor/viewport.js")
     body
         include includes/navbar.pug
         #area

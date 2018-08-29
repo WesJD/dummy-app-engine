@@ -2,7 +2,8 @@
     "name": "server",
     "version": "1.0.0",
     "scripts": {
-        "server": "cd ../client && npm run convert && cd ../server && DEBUG=engine:* node --use_strict src/boot.js"
+        "server": "cd ../client && npm run convert && cd ../server && NODE_ENV=production DEBUG=engine:* node --use_strict src/boot.js",
+        "dev": "NODE_ENV=development DEBUG=engine:* node --use_strict src/boot.js"
     },
     "dependencies": {
         "babel-preset-env": "^1.7.0",

@@ -10,3 +10,7 @@ html {
 i.fas {
     width: 15px;
 }
+
+.hidden {
+    display: none !important;
+}

@@ -9,7 +9,7 @@ import { urlencoded } from "body-parser"
 
 export const config = require("../config.json")
 const debug = getDebugger("server")
-const clientDirectory = __dirname + "/../../client/bin"
+const clientDirectory = getViewsDirectory()
 
 setupDatabase()
 setupPassport()
@@ -31,3 +31,13 @@ server.use(passport.session())
 server.use(routes)
 
 server.listen(config.port, () => debug("Started on port", config.port))
+
+function getViewsDirectory() {
+    let base = __dirname + "/../../client/"
+    if (process.env.NODE_ENV == "production") {
+        base += "bin"
+    } else {
+        base += "src"
+    }
+    return base
+}

@@ -1,0 +1,1 @@
+const PROJECT_HASH = window.location.href.split("=")[1]

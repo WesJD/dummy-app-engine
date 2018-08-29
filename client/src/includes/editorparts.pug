@@ -5,7 +5,17 @@ mixin manageElement(type, name)
         span= "type-" + type + " named " + name
 
 mixin element(element)
-    .element(style="margin-left:" + element.x + "px; margin-top:" + element.y + "px; width:" + element.width + "px; height:" + element.height + "px; background-color:red;")
+    .element-box(style="margin-left:" + element.x + "px; margin-top:" + element.y + "px;")
+        .adj-point.left.top
+        .adj-point.right.top
+        .mid
+            .adj-point.left
+            .adj-point.right
+        .adj-point.center.top
+        .adj-point.center.bottom
+        .adj-point.left.bottom
+        .adj-point.right.bottom
+        .element(style="width:" + element.width + "px; height:" + element.height + "px; background-color:red;")
 
 mixin editarea(screen, index)
     .editor(hash=screen.hash).hidden
