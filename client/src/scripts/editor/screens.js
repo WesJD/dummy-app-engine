@@ -24,7 +24,7 @@ function select(index, unsetOld = true) {
     editor.classList.remove("hidden")
     const elements = getElementsOfEditor(editor)
     for (const element of elements) {
-        makeEditable(element)
+        ensureEditable(element)
     }
 
     viewholders[index].classList.add("selected")
