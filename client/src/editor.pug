@@ -2,22 +2,77 @@ doctype html
 html
     head
         title Edit
+        meta(name="update_interval" content=updateInterval)
+        meta(name="viewport_dimension_y" content=viewport.height)
+        meta(name="viewport_dimension_x" content=viewport.width)
         include includes/styles.pug
         +sheet("/styles/editor.css")
         include includes/scripts.pug
         +script("/scripts/editor/globals.js")
         +script("/scripts/editor/dragability.js")
+        +script("/scripts/editor/moving.js")
+        +script("/scripts/editor/resizing.js")
         +script("/scripts/editor/screens.js")
-        +script("/scripts/editor/viewport.js")
+        +script("/scripts/editor/changes.js")
+        +script("/scripts/editor/editing.js")
+        +script("/scripts/editor/demonstrate.js")
     body
         include includes/navbar.pug
+        nav.navbar(role="editing" aria-label="editor")
+            .navbar-start
+                a.navbar-item.right-divider#newscreen(onclick="newScreen();")
+                    i.fas.fa-plus
+                    span.space-from-icon New Screen
+                .navbar-item.has-dropdown.is-hoverable.right-divider
+                    a.navbar-link
+                        f.fas.fa-expand
+                        span.space-from-icon New Element
+                    .navbar-dropdown
+                        a.navbar-item(onclick="newElement(\"inputfield\");")
+                            i.fas.fa-keyboard
+                            span.space-from-icon Input field
+                        a.navbar-item(onclick="newElement(\"textbox\");")
+                            i.fas.fa-align-left
+                            span.space-from-icon Text box
+                        a.navbar-item(onclick="newElement(\"background\");")
+                            i.fas.fa-image
+                            span.space-from-icon Background
+                        a.navbar-item(onclick="newElement(\"button\");")
+                            i.fas.fa-arrow-right
+                            span.space-from-icon Button
+                a.navbar-item.disabled(onclick="editControlFlow();")
+                    i.fas.fa-cogs
+                    span.space-from-icon Control Flow
+                a.navbar-item.disabled(onclick="editBackground();")
+                    i.fas.fa-image
+                    span.space-from-icon Background
+            .navbar-end
+                a.navbar-item(onclick="demonstrate();")
+                    i.fas.fa-mobile
+                    span.space-from-icon Demonstrate
+                .navbar-item.has-dropdown.is-hoverable
+                    a.navbar-item(onclick="editDetails();")
+                        i.fas.fa-pencil-alt
+                        span.space-from-icon Edit Project Details
         #area
             include includes/editorparts.pug
             #screenviews
                 each screen, index in project.screens
                     +screenview(screen, index)
-                a.viewholder.newscreen(onclick="newScreen();")
-                    i.fas.fa-plus
-                    span New Screen
             each screen, index in project.screens
-                +editarea(screen, index)
+                +editarea(screen)
+        .modal#projectDetails
+            .modal-background
+            .modal-card
+                header.modal-card-head
+                    span.modal-card-title Project Details
+                .modal-card-body
+                    label.label Name
+                    .field
+                        input.input#name(type="text" value=project.name)
+                        span.help.is-danger.hidden This field cannot be empty
+                    label.label Description
+                    .field
+                        textarea.textarea(placeholder="Project description" rows="2") #{project.description}
+                footer.modal-card-foot
+                    a.button.is-success(onclick="editDetails(true);") Done

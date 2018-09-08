@@ -4,7 +4,7 @@ import { mysql } from "../../../data/database"
 import { getDebugger } from "../../../utils/debugutil"
 import { server } from "../../../server"
 import { newUniqueHash } from "../../../utils/hashutil"
-import { createNewElement } from "./element";
+import { createNewElement } from "./element"
 
 const router = getAuthorizedRouter(true)
 const debug = getDebugger("screen")

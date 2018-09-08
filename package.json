@@ -15,5 +15,6 @@
     "bugs": {
         "url": "https://github.com/WesJD/dummy-app-engine/issues"
     },
-    "homepage": "https://github.com/WesJD/dummy-app-engine#readme"
+    "homepage": "https://github.com/WesJD/dummy-app-engine#readme",
+    "dependencies": {}
 }

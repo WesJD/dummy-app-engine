@@ -5,45 +5,31 @@ mixin manageElement(type, name)
         span= "type-" + type + " named " + name
 
 mixin element(element)
-    .element-box(style="margin-left:" + element.x + "px; margin-top:" + element.y + "px;")
-        .adj-point.left.top
-        .adj-point.right.top
-        .mid
-            .adj-point.left
-            .adj-point.right
-        .adj-point.center.top
-        .adj-point.center.bottom
-        .adj-point.left.bottom
-        .adj-point.right.bottom
-        .element(style="width:" + element.width + "px; height:" + element.height + "px; background-color:red;")
+    .element-box(style="margin-left:" + element.x + "px; margin-top:" + element.y + "px;" hash=element.hash)
+        .adj-point.left.top.hidden
+        .adj-point.right.top.hidden
+        .mid.hidden
+            .adj-point.left.hidden
+            .adj-point.right.hidden
+        .adj-point.center.top.hidden
+        .adj-point.center.bottom.hidden
+        .adj-point.left.bottom.hidden
+        .adj-point.right.bottom.hidden
+        .element(style="width:" + element.width + "px; height:" + element.height + "px; background:" + element.background + ";")
 
-mixin editarea(screen, index)
-    .editor(hash=screen.hash).hidden
-        .viewport
-            each element in screen.elements
-                +element(element)
-        .mapper
-            nav.panel
-                p.panel-heading Manage Elements
-                each element in screen.elements
-                    +manageElement(element.type, element.hash)
-                .panel-block
-                    .dropdown.newDropdown
-                        .dropdown-trigger
-                            button.button.is-link.is-outlined.is-fullwidth(aria-haspopup="true" aria-controls="dropdown-menu")
-                                i.fas.fa-plus
-                                span.space-from-icon New Element
-                        .dropdown-menu#dropdown-menu(role="menu")
-                            .dropdown-content
-                                a.dropdown-item(onclick="newElement(\"" + screen.hash + "\", \"inputfield\");")
-                                    i.fas.fa-keyboard
-                                    span.space-from-icon Input field
-                                a.dropdown-item(onclick="newElement(\"" + screen.hash + "\", \"textbox\");")
-                                    i.fas.fa-align-left
-                                    span.space-from-icon Text box
-                                a.dropdown-item(onclick="newElement(\"" + screen.hash + "\", \"background\");")
-                                    i.fas.fa-image
-                                    span.space-from-icon Background
+mixin editarea(screen)
+    .editor.hidden(hash=screen.hash)
+        +viewport(screen)
+        .modal
+            .modal-background
+            .modal-content
+                +viewport(screen)
+            button.modal-close.is-large(aria-label="close" onclick="cancelDemonstration();")
+
+mixin viewport(screen)
+    .viewport(style="height: " + viewport.height + "px; width: " + viewport.width + "px;")
+        each element in screen.elements
+            +element(element)
 
 mixin screenview(screen, index)
     .viewholder(onclick="select(" + index + ");")

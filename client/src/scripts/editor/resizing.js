@@ -1,106 +1,8 @@
-document.addEventListener("DOMContentLoaded", event => {
-    const dropdowns = document.getElementsByClassName("newDropdown")
-    for (const dropdown of dropdowns) {
-        dropdown.addEventListener("click", (event) => {
-            event.stopPropagation()
-            dropdown.classList.toggle("is-active")
-        })
-    }
-    document.addEventListener("click", () => {
-        for (const dropdown of dropdowns) {
-            dropdown.classList.remove("is-active")
-        }
-    })
-})
-
-function newElement(screenHash, type) {
-    fetch(
-        `/project/modify/element?project=${PROJECT_HASH}&screen=${screenHash}&type=${type}`,
-        {
-            "method": "POST",
-            "credentials": "include"
-        }
-    ).then(res => {
-        if (res.ok) {
-            return res.json()
-        } else throw new Error("Couldn't create element!")
-    }).then(renderedHtml => {
-        for (const editor of editors) {
-            const hash = editor.getAttribute("hash")
-            if (hash == screenHash) {
-                const mapper = editor.getElementsByClassName("mapper")[0]
-                const panel = mapper.getElementsByClassName("panel")[0]
-                const panelBlocks = panel.getElementsByClassName("panel-block")
-                panelBlocks[panelBlocks.length - 1].insertAdjacentHTML("beforebegin", renderedHtml.rendered)
-            }
-        }
-    }).catch(err => console.log(err))
-}
-
-function ensureEditable(element) {
-    if (element.getAttribute("listening")) {
-        return
-    }
-
-    const viewport = element.parentElement
-    const realElement = element.getElementsByClassName("element")[0]
-    const midBox = element.getElementsByClassName("mid")[0]
-
-    const viewportBounds = viewport.getBoundingClientRect()
-
-    const borderSize = fromPx(getComputedStyle(element)["border-top-width"])
-    Dragability.forElement(element)
-        .withPrecondition(event => {
-            const x = event.clientX
-            const y = event.clientY
-
-            const element = document.elementFromPoint(x, y)
-            if (element && getComputedStyle(element).cursor != "move") {
-                return false
-            }
-
-            const elementBounds = element.getBoundingClientRect()
-            const borderTop = elementBounds.top + borderSize
-            const borderLeft = elementBounds.left + borderSize
-            const borderBottom = elementBounds.bottom - borderSize
-            const borderRight = elementBounds.right - borderSize
-            return x >= elementBounds.left && x <= borderLeft ||
-                x >= borderRight && x <= elementBounds.right ||
-                y >= elementBounds.top && y <= borderTop ||
-                y >= borderBottom && y <= elementBounds.bottom
-        })
-        .withCursor("move")
-        .withInitialData(event => {
-            const elementBounds = element.getBoundingClientRect()
-            return {
-                spaceX: event.clientX - elementBounds.left,
-                spaceY: event.clientY - elementBounds.top
-            }
-        })
-        .onMove((event, data) => {
-            midBox.style.cursor = "move"
-
-            const newX = Math.min(Math.max(0, (event.clientX - viewportBounds.left) - data.spaceX), MAX_X)
-            const newY = Math.min(Math.max(0, (event.clientY - viewportBounds.top) - data.spaceY), MAX_Y)
-
-            element.style.marginLeft = newX + "px"
-            element.style.marginTop = newY + "px"
-        })
-        .onFinish(() => {
-            //TODO submit new location to server
-
-            midBox.style.cursor = "default"
-        })
-        .apply()
-
+function makeResizeable(element, realElement) {
     function setupAdjustPoint(selector, handler, mid) {
-        if (typeof selector == "array") {
-            selector.forEach(selec => setupAdjustPoint(selector, handler, mid))
-            return
-        }
-
         const adjustPoint = element.querySelector((mid ? ".mid " : "") + ".adj-point" + selector)
         Dragability.forElement(adjustPoint)
+            .withPrecondition(() => element.classList.contains("with-border"))
             .withInitialData(event => {
                 return {
                     startX: event.clientX,
@@ -206,10 +108,4 @@ function ensureEditable(element) {
             realElement.style.width = newWidth + "px"
         }
     })
-
-    element.setAttribute("listening", "yes")
-}
-
-function fromPx(css) {
-    return parseFloat(css.substring(0, css.length - 2))
 }

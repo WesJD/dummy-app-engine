@@ -19,7 +19,7 @@ router.get(
             `
             SELECT projects.hash, projects.name, projects.description, screens.hash AS screen_hash, screens.place,
                    elements.hash AS element_hash, elements.type, elements.x, elements.y, elements.width, elements.height,
-                   elements.color, elements.url, elements.text
+                   elements.background, elements.text
             FROM projects
             LEFT JOIN screens ON screens.project = projects.hash
             LEFT JOIN elements ON elements.screen = screens.hash
@@ -68,15 +68,14 @@ router.get(
                                 }
 
                                 elements.push({
-                                    hash: result.element_hash,
-                                    type: result.type,
-                                    x: result.x,
-                                    y: result.y,
-                                    width: result.width,
-                                    height: result.height,
-                                    color: result.color,
-                                    url: result.url,
-                                    text: result.text
+                                    hash: evenLowerResult.element_hash,
+                                    type: evenLowerResult.type,
+                                    x: evenLowerResult.x,
+                                    y: evenLowerResult.y,
+                                    width: evenLowerResult.width,
+                                    height: evenLowerResult.height,
+                                    background: evenLowerResult.background,
+                                    text: evenLowerResult.text
                                 })
 
                                 j = k

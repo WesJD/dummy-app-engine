@@ -44,7 +44,7 @@ function newScreen() {
             return res.json()
         } else throw new Error("Couldn't create new screen!")
     }).then(renderedHtml => {
-        viewholders[viewholders.length - 1].insertAdjacentHTML("beforebegin", renderedHtml.screenview)
+        viewholders[viewholders.length - 1].insertAdjacentHTML("afterend", renderedHtml.screenview)
         editors[editors.length - 1].insertAdjacentHTML("afterend", renderedHtml.editarea)
 
         reloadCache()
@@ -60,4 +60,12 @@ function reloadCache() {
 function getElementsOfEditor(editor) {
     const viewport = editor.getElementsByClassName("viewport")[0]
     return viewport.getElementsByClassName("element-box")
+}
+
+function getCurrentEditor() {
+    return editors[selectedIndex]
+}
+
+function getCurrentEditorHash() {
+    return getCurrentEditor().getAttribute("hash")
 }

@@ -1,27 +1,31 @@
+:root {
+    --nav-link-color: hsl(204, 86%, 53%);
+}
+
 #nav-container {
     padding-bottom: 2%;
 }
 
-.navbar {
+.navbar[role=navigation] {
     background-color: rgba(0,0,0,0.8);
 }
 
-.navbar .navbar-brand {
+.navbar[role=navigation] .navbar-brand {
     text-align: center;
     display: block;
     width: 100%;
 }
 
-.navbar .navbar-brand > .navbar-item,
-.navbar .navbar-brand .navbar-link {
+.navbar[role=navigation] .navbar-brand > .navbar-item,
+.navbar[role=navigation] .navbar-brand .navbar-link {
   display: inline-block;
 }
 
-.navbar-item {
-    color: hsl(204, 86%, 53%);
+.navbar[role=navigation] .navbar-item {
+    color: var(--nav-link-color);
 }
 
-.navbar #name {
+.navbar[role=navigation] #name {
     font-family: "Bungee Inline";
     font-size: 1.7em;
     color: rgb(224, 216, 67);

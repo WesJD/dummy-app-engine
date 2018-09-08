@@ -1,5 +1,3 @@
-"use strict"
-
 function toggleNewProject() {
     document.getElementsByClassName("modal")[0].classList.toggle("is-active")
 }

@@ -6,8 +6,7 @@ CREATE TABLE IF NOT EXISTS elements (
     y INT(2) NOT NULL,
     width INT(2) NOT NULL,
     height INT(2) NOT NULL,
-    color CHAR(7),
-    url VARCHAR(50),
+    background VARCHAR(250) DEFAULT "transparent",
     text VARCHAR(250),
     UNIQUE (hash)
 );
