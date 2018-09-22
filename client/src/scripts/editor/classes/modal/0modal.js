@@ -1,18 +1,19 @@
-class BackgroundModal {
+class Modal {
     constructor(element) {
         this.element = element
-        this.doneButton = element.querySelector("a.button")
         this.showing = false
-
-        this.doneButton.addEventListener("click", () => this.close())
     }
 
     open() {
-        this.toggle()
+        if (!this.showing) {
+            this.toggle()
+        }
     }
 
     close() {
-        this.toggle()
+        if (this.showing) {
+            this.toggle()
+        }
     }
 
     toggle() {

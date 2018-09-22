@@ -44,13 +44,28 @@ html
                     i.fas.fa-trash-alt
                     span.space-from-icon Delete
             .navbar-end
-                a.navbar-item
+                a.navbar-item#demonstrate
                     i.fas.fa-mobile
                     span.space-from-icon Demonstrate
-                .navbar-item.has-dropdown.is-hoverable
+                .navbar-item.has-dropdown.is-hoverable#editProjectDetails
                     a.navbar-item
                         i.fas.fa-pencil-alt
                         span.space-from-icon Edit Project Details
+                    .modal
+                        .modal-background
+                        .modal-card
+                            header.modal-card-head
+                                span.modal-card-title Project Details
+                            .modal-card-body
+                                label.label Name
+                                .field
+                                    input.input(type="text" filling="name" value=project.name)
+                                    span.help.is-danger.hidden This field cannot be empty
+                                label.label Description
+                                .field
+                                    textarea.textarea(placeholder="Project description" filling="description" rows="2") #{project.description}
+                            footer.modal-card-foot
+                                a.button.is-success Done
         #area
             include includes/editorparts.pug
             #screenviews
@@ -58,18 +73,3 @@ html
                     +screenview(screen, index)
             each screen, index in project.screens
                 +editarea(screen)
-        .modal#projectDetails
-            .modal-background
-            .modal-card
-                header.modal-card-head
-                    span.modal-card-title Project Details
-                .modal-card-body
-                    label.label Name
-                    .field
-                        input.input#name(type="text" value=project.name)
-                        span.help.is-danger.hidden This field cannot be empty
-                    label.label Description
-                    .field
-                        textarea.textarea(placeholder="Project description" rows="2") #{project.description}
-                footer.modal-card-foot
-                    a.button.is-success(onclick="editDetails(true);") Done

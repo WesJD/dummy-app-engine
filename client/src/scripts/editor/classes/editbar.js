@@ -3,7 +3,15 @@ class EditBar {
         this.element = element
         this.editsEnabled = false
 
-        const newScreen = this.newScreen = element.querySelector("#newScreen")
+        this.setupNewScreen()
+        this.setupNewElement()
+        this.setupEditButtons()
+        this.setupDemonstrate()
+        this.setupEditProjectDetails()
+    }
+
+    setupNewScreen() {
+        const newScreen = this.newScreen = this.element.querySelector("#newScreen")
         newScreen.addEventListener("click", () => {
             fetch(
                 `/project/modify/screen?hash=${PROJECT_HASH}`,
@@ -24,8 +32,10 @@ class EditBar {
                 Page.screenViewHolders.push(new ScreenViewHolder(document.querySelector(`.viewholder[corresponding=\"${res.hash}\"]`), editor))
             }).catch(err => console.log(err))
         })
+    }
 
-        const newElement = this.newElement = element.querySelector("#newElement")
+    setupNewElement() {
+        const newElement = this.newElement = this.element.querySelector("#newElement")
         function createElement(type) {
             const editor = Page.getCurrentEditor()
             fetch(
@@ -47,20 +57,22 @@ class EditBar {
             const type = selection.getAttribute("type")
             selection.addEventListener("click", () => createElement(type))
         })
+    }
 
+    setupEditButtons() {
         this.editButtons = {
             controlFlow: {
-                element: element.querySelector("#controlFlow"),
+                element: this.element.querySelector("#controlFlow"),
                 handler: () => {
                     console.log("controlflow")
                 }
             },
             background: {
-                element: element.querySelector("#background"),
+                element: this.element.querySelector("#background"),
                 handler: () => Page.getCurrentEditor().viewport.selectedElement.box.backgroundModal.open()
             },
             delete: {
-                element: element.querySelector("#delete"),
+                element: this.element.querySelector("#delete"),
                 handler: () => {
                     const selectedBox = Page.getCurrentEditor().viewport.selectedElement.box
                     fetch(
@@ -86,6 +98,16 @@ class EditBar {
         }
     }
 
+    setupDemonstrate() {
+
+    }
+
+    setupEditProjectDetails() {
+        const editProjectDetails = this.editProjectDetails = this.element.querySelector("#editProjectDetails .navbar-item")
+        const projectDetailsModal = this.projectDetailsModal = new ProjectDetailsModal(editProjectDetails.parentElement.querySelector(".modal"))
+        editProjectDetails.addEventListener("click", projectDetailsModal.open.bind(projectDetailsModal))
+    }
+
     ensureButtonsEnabled() {
         if (!this.editsEnabled) {
             this.toggleButtons()
@@ -101,11 +123,5 @@ class EditBar {
         for (const key in this.editButtons) {
             this.editButtons[key].element.classList.toggle("disabled")
         }
-    }
-}
-
-class EditBarButton {
-    constructor(element) {
-        this.element = element
     }
 }

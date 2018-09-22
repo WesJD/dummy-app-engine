@@ -1,5 +1,5 @@
 import { getAuthorizedRouter } from "../../utils/routerutil"
-import { readdirSyncRecursive } from "../../utils/fileutils"
+import { readdirSyncRecursive } from "../../utils/fileutil"
 import { getDebugger } from "../../utils/debugutil"
 import { getViewsDirectory } from "../../server"
 
