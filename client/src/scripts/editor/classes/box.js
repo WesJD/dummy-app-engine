@@ -63,11 +63,10 @@ class Box {
                 }
             })
             .onMove((event, data) => {
-                console.log("move")
                 this.midBox.style.cursor = "move"
 
-                const newX = Math.min(Math.max(0, (event.clientX - this.viewport.bounds.left) - data.spaceX), MAX_X - this.element.width)
-                const newY = Math.min(Math.max(0, (event.clientY - this.viewport.bounds.top) - data.spaceY), MAX_Y - this.element.height)
+                const newX = (event.clientX - data.spaceX) - this.viewport.x
+                const newY = (event.clientY - data.spaceY) - this.viewport.y
 
                 this.x = newX
                 this.y = newY
@@ -81,92 +80,56 @@ class Box {
 
         this.setupAdjustPoint(".center.top", (_, diffY) => {
             const newHeight = this.element.height + diffY
-            const newY = this.y - diffY
-            if (newHeight >= 0 && newY >= 0 && newY <= MAX_Y) {
-                this.y = newY
+            if (newHeight >= 0) {
+                this.y = this.y - diffY
                 this.element.height = newHeight
             }
         })
-        this.setupAdjustPoint(".center.bottom", (_, diffY) => {
-            const newHeight = this.element.height - diffY
-            const value = this.y + newHeight
-            if (value >= 0 && value <= MAX_Y) {
-                this.element.height = newHeight
-            }
-        })
+        this.setupAdjustPoint(".center.bottom", (_, diffY) => this.element.height = this.element.height - diffY)
         this.setupAdjustPoint(".left", diffX => {
             const newWidth = this.element.width + diffX
-            const newX = this.x - diffX
-            if (newWidth >= 0 && newX >= 0 && newX <= MAX_X) {
-                this.x = newX
+            if (newWidth >= 0) {
+                this.x -= diffX
                 this.element.width = newWidth
             }
         }, true)
-        this.setupAdjustPoint(".right", diffX => {
-            const newWidth = this.element.width - diffX
-            const value = this.x + newWidth
-            if (value >= 0 && value <= MAX_X) {
-                this.element.width = newWidth
-            }
-        }, true)
+        this.setupAdjustPoint(".right", diffX => this.element.width = this.element.width - diffX, true)
         this.setupAdjustPoint(".left.top", (diffX, diffY) => {
-            const diff = (diffX + diffY) / 2
-            const newHeight = this.element.height + diff
-            const newWidth = this.element.width + diff
-            const newX = this.x - diff
-            const newY = this.y - diff
-            if ((newHeight >= 0 || newWidth >= 0) &&
-                newX >= 0 && newX <= MAX_X &&
-                newY >= 0 && newY <= MAX_Y) {
+            const newHeight = this.element.height + diffY
+            const newWidth = this.element.width + diffX
+            if (newHeight >= 0 && newWidth >= 0) {
                 this.element.height = newHeight
                 this.element.width = newWidth
-                this.x = newX
-                this.y = newY
+                this.x -= diffX
+                this.y -= diffY
             }
         })
         this.setupAdjustPoint(".right.top", (diffX, diffY) => {
-            const diff = (diffX - diffY) / 2
-            const newHeight = this.element.height - diff
-            const newWidth = this.element.width - diff
-            const newY = this.y + diff
-            const endX = this.x + newWidth
-            if ((newHeight >= 0 || newWidth >= 0) &&
-                endX >= 0 && endX <= MAX_X &&
-                newY >= 0 && newY <= MAX_Y) {
+            const newHeight = this.element.height + diffY
+            const newWidth = this.element.width - diffX
+            if (newHeight >= 0 && newWidth >= 0) {
                 this.element.height = newHeight
                 this.element.width = newWidth
-                this.y = newY
+                this.y -= diffY
             }
         })
         this.setupAdjustPoint(".left.bottom", (diffX, diffY) => {
-            const diff = (diffX - diffY) / 2
-            const newHeight = this.element.height + diff
-            const newWidth = this.element.width + diff
-            const newX = this.x - diff
-            const endY = this.y + newWidth
-            if ((newHeight >= 0 || newWidth >= 0) &&
-                newX >= 0 && newX <= MAX_X &&
-                endY >= 0 && endY <= MAX_Y) {
+            const newHeight = this.element.height - diffY
+            const newWidth = this.element.width + diffX
+            if (newHeight >= 0 && newWidth >= 0) {
                 this.element.height = newHeight
                 this.element.width = newWidth
-                this.x = newX
+                this.x -= diffX
             }
         })
         this.setupAdjustPoint(".right.bottom", (diffX, diffY) => {
-            const diff = (diffX + diffY) / 2
-            const newHeight = this.element.height - diff
-            const newWidth = this.element.width - diff
-            const endX = this.x + newWidth
-            const endY = this.y + newHeight
-            if ((newHeight >= 0 || newWidth >= 0) &&
-                endX >= 0 && endX <= MAX_X &&
-                endY >= 0 && endY <= MAX_Y) {
+            const newHeight = this.element.height - diffY
+            const newWidth = this.element.width - diffX
+            if (newHeight >= 0 && newWidth >= 0) {
                 this.element.height = newHeight
                 this.element.width = newWidth
             }
         })
-
-        this.element.setup()
     }
 
     setupAdjustPoint(selector, handler, mid) {

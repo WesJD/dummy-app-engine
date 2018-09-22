@@ -7,7 +7,7 @@
 }
 
 .navbar[role=navigation] {
-    background-color: rgba(0,0,0,0.8);
+    background-color: rgb(34, 34, 34);
 }
 
 .navbar[role=navigation] .navbar-brand {

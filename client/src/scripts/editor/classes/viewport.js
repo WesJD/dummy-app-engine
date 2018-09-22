@@ -7,6 +7,14 @@ class Viewport {
         domElement.forEach(domElement => this.boxes.push(new Box(domElement, this)))
     }
 
+    get x() {
+        return this.bounds.left
+    }
+
+    get y() {
+        return this.bounds.top
+    }
+
     addElement(element) {
         const box = new Box(element, this)
         this.boxes.push(box)

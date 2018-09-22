@@ -34,6 +34,7 @@ mixin editarea(screen)
 
 mixin viewport(screen)
     .viewport(style="height: " + viewport.height + "px; width: " + viewport.width + "px;")
+        .viewport-border
         each element in screen.elements
             +element(element)
 
