@@ -38,6 +38,9 @@ function newElement(type) {
     }).then(res => {
         const viewport = getCurrentEditor().querySelector(".viewport")
         viewport.insertAdjacentHTML("beforeend", res.rendered)
+
+        const elements = viewport.querySelectorAll(".element-box")
+        ensureEditable(elements[elements.length - 1])
     }).catch(err => console.log(err))
 }
 
@@ -59,7 +62,7 @@ function ensureEditable(element) {
                     element.setAttribute("border-listening", "yes")
                 }
 
-                ensureEditsEnabled()
+                editsEnabled(true)
                 selectedElement = element
             }
         })
@@ -73,9 +76,12 @@ function unselectElement(element) {
     element.classList.toggle("with-border")
 }
 
-function ensureEditsEnabled() {
-    if (!editBar.hasAttribute("editing")) {
-        editBar.querySelectorAll(".disabled").forEach(element => element.classList.toggle("disabled"))
+function editsEnabled(value) {
+    if (!value && editBar.hasAttribute("editing")) {
+        editBar.querySelectorAll(".navbar-item[use=edit]").forEach(element => element.classList.toggle("disabled"))
+        editBar.removeAttribute("editing")
+    } else if (value && !editBar.hasAttribute("editing")) {
+        editBar.querySelectorAll(".navbar-item[use=edit]").forEach(element => element.classList.toggle("disabled"))
         editBar.setAttribute("editing", "enabled")
     }
 }

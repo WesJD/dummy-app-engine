@@ -42,7 +42,7 @@ html, body {
 
 .navbar[role=editing] .disabled,
 .navbar[role=editing] .navbar-dropdown .navbar-item {
-    color: #4a4a4a;
+    color: #4a4a4a !important;
 }
 
 .navbar[role=editing] .navbar-dropdown .navbar-item {
@@ -62,7 +62,11 @@ html, body {
     border-right: var(--screenviews-border-width) solid var(--line-color);
 }
 
-#newscreen {
+.navbar[role=editing] .navbar-item[role=delete]  {
+    color: hsl(348, 100%, 61%);
+}
+
+#newScreen {
     border-color: grey;
     width: var(--screenviews-width);
 }
@@ -114,7 +118,7 @@ html, body {
 
 .index {
     font-weight: bold;
-    font-size: 0.8em;
+    font-size: 0.8rem;
     color: var(--unselected-color);
 
     margin-right: 10%;

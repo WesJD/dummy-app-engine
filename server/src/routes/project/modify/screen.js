@@ -5,6 +5,7 @@ import { getDebugger } from "../../../utils/debugutil"
 import { server } from "../../../server"
 import { newUniqueHash } from "../../../utils/hashutil"
 import { createNewElement } from "./element"
+import { HEIGHT, WIDTH } from "../editor"
 
 const router = getAuthorizedRouter(true)
 const debug = getDebugger("screen")
@@ -13,10 +14,14 @@ router.post("/", (req, res) => {
     const project = req.session.projects.find(project => project.hash == req.query.hash)
     if (project) {
         const locals = createNewScreen(project)
+        locals.viewport = {
+            height: HEIGHT,
+            width: WIDTH
+        }
 
         const screenview = pug.renderFile(server.get("views") + "/server/screenview.pug", locals)
         const editarea = pug.renderFile(server.get("views") + "/server/editarea.pug", locals)
-        res.json({ screenview, editarea }).status(200).send()
+        res.json({ hash: locals.hash, screenview, editarea }).status(200).send()
     } else res.status(403)
 })
 
@@ -44,7 +49,7 @@ export function createNewScreen(project) {
 
     createNewElement(screen, "background")
 
-    return { screen, index }
+    return { hash, screen, index }
 }
 
 export default router

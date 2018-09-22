@@ -9,7 +9,7 @@
         "google": {
             "clientID": "534983381773-d1or7bvubv7d2kh7c3h873eidba780vh.apps.googleusercontent.com",
             "clientSecret": "vOEUdEHusKyp9rfz6_z9tDnv",
-            "callbackURL": "http://biotech.wesjd.net:3000/auth/google/callback"
+            "callbackURL": "https://biotech.wesjd.net/auth/google/callback"
         }
     },
     "mysql": {

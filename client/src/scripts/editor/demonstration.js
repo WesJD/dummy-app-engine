@@ -1,0 +1,8 @@
+const Demonstration = {
+    start: () => {
+
+    },
+    cancel: () => {
+
+    }
+}

@@ -32,7 +32,7 @@ server.use(routes)
 
 server.listen(config.port, () => debug("Started on port", config.port))
 
-function getViewsDirectory() {
+export function getViewsDirectory() {
     let base = __dirname + "/../../client/"
     if (process.env.NODE_ENV == "production") {
         base += "bin"

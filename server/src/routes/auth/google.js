@@ -60,27 +60,29 @@ router.get(
                             }
 
                             const elements = []
-                            for (let k = j; k < results.length; k++) {
-                                const evenLowerResult = results[k]
-                                if (evenLowerResult.screen_hash != lowerResult.screen_hash) {
-                                    k--
-                                    break
+                            if (lowerResult.element_hash) {
+                                for (let k = j; k < results.length; k++) {
+                                    const evenLowerResult = results[k]
+                                    if (evenLowerResult.screen_hash != lowerResult.screen_hash) {
+                                        k--
+                                        break
+                                    }
+
+                                    elements.push({
+                                        hash: evenLowerResult.element_hash,
+                                        type: evenLowerResult.type,
+                                        x: evenLowerResult.x,
+                                        y: evenLowerResult.y,
+                                        width: evenLowerResult.width,
+                                        height: evenLowerResult.height,
+                                        background: evenLowerResult.background,
+                                        text: evenLowerResult.text
+                                    })
+
+                                    j = k
                                 }
-
-                                elements.push({
-                                    hash: evenLowerResult.element_hash,
-                                    type: evenLowerResult.type,
-                                    x: evenLowerResult.x,
-                                    y: evenLowerResult.y,
-                                    width: evenLowerResult.width,
-                                    height: evenLowerResult.height,
-                                    background: evenLowerResult.background,
-                                    text: evenLowerResult.text
-                                })
-
-                                j = k
+                                debug("elements", JSON.stringify(elements))
                             }
-                            debug("elements", JSON.stringify(elements))
 
                             insertScreen(lowerResult, elements)
                         }

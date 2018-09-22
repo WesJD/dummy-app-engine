@@ -1,9 +1,3 @@
-mixin manageElement(type, name)
-    a.panel-block
-        .panel-icon
-            i.fas.fa-edit
-        span= "type-" + type + " named " + name
-
 mixin element(element)
     .element-box(style="margin-left:" + element.x + "px; margin-top:" + element.y + "px;" hash=element.hash)
         .adj-point.left.top.hidden
@@ -16,11 +10,23 @@ mixin element(element)
         .adj-point.left.bottom.hidden
         .adj-point.right.bottom.hidden
         .element(style="width:" + element.width + "px; height:" + element.height + "px; background:" + element.background + ";")
+            if element.type == "inputfield"
+                textarea.textarea(placeholder="Text")
+        .modal(use="background")
+            .modal-background
+            .modal-card
+                header.modal-card-head
+                    p Background
+                section.modal-card-body
+                    p Hello mr
+                footer.modal-card-foot
+                    a.button.is-success Done
+
 
 mixin editarea(screen)
     .editor.hidden(hash=screen.hash)
         +viewport(screen)
-        .modal
+        .modal(use="base")
             .modal-background
             .modal-content
                 +viewport(screen)
@@ -32,7 +38,7 @@ mixin viewport(screen)
             +element(element)
 
 mixin screenview(screen, index)
-    .viewholder(onclick="select(" + index + ");")
+    .viewholder(corresponding=screen.hash)
         span.index.is-pulled-right= index+1
         .screenview.is-pulled-right
             p screen

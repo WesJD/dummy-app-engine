@@ -29,7 +29,7 @@ router.use((req, res, next) => {
 router.post("/", (req, res) => {
     const element = createNewElement(req.screen, req.query.type)
     const rendered = pug.renderFile(server.get("views") + "/server/element.pug", { element })
-    res.json({ rendered }).status(200).send()
+    res.json({ hash: element.hash, rendered }).status(200).send()
 })
 
 router.put("/", (req, res) => {
@@ -39,13 +39,22 @@ router.put("/", (req, res) => {
 })
 
 router.delete("/", (req, res) => {
-
+    const hash = req.query.element
+    req.screen.elements.splice(req.screen.elements.findIndex(element => element.hash == hash), 1)
+    req.session.save() //sessions annoy :(
+    mysql.query(
+        `DELETE FROM elements WHERE hash = ?`,
+        [hash],
+        err => {
+            if (err) debug("Couldn't delete element!", err)
+        }
+    )
 })
 
 export function createNewElement(screen, type) {
     const hash = newUniqueHash()
 
-    let background
+    let background = "transparent"
     let width
     let height
     switch (type) {
@@ -61,7 +70,7 @@ export function createNewElement(screen, type) {
     const y = Math.floor(CENTER_Y - (height / 2))
 
     mysql.query(
-        `INSERT INTO elements (hash, screen, type, x, y, width, height, background) VALUES (?,?,?,?,?,?,?)`,
+        `INSERT INTO elements (hash, screen, type, x, y, width, height, background) VALUES (?,?,?,?,?,?,?,?)`,
         [hash, screen.hash, type, x, y, width, height, background],
         err => {
             if (err) debug("Couldn't insert element!", err)
