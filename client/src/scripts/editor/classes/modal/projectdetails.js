@@ -20,7 +20,7 @@ class ProjectDetailsModal extends Modal {
                 if (name != this.fields.name.originalValue ||
                     description != this.fields.description.originalValue) {
                     fetch(
-                        `/project/modify/details?project=${PROJECT_HASH}`,
+                        `/project/modify/details?project=${Page.projectHash}`,
                         {
                             method: "POST",
                             credentials: "include",
@@ -31,9 +31,7 @@ class ProjectDetailsModal extends Modal {
                         },
                     ).then(res => {
                         if (!res.ok) throw new Error("Couldn't submit new details!")
-                    }).catch(err => {
-                        console.err(err)
-                    })
+                    }).catch(console.log)
                 }
                 this.close()
             }

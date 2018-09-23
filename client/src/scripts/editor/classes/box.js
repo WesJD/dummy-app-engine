@@ -72,7 +72,10 @@ class Box {
                 this.y = newY
             })
             .onFinish(() => {
-                //TODO submit new location to server
+                Change.onScreen(this.viewport.editor.hash)
+                    .forElement(this.hash)
+                    .position(this.x, this.y)
+                    .push()
 
                 this.midBox.style.cursor = "default"
             })
@@ -150,7 +153,14 @@ class Box {
                 handler(diffX, diffY)
             })
             .onFinish(() => {
-                //TODO submit new location to server
+                Change.onScreen(this.viewport.editor.hash)
+                    .forElement(this.hash)
+                    .resize(this.element.height, this.element.width)
+                    .push()
+                Change.onScreen(this.viewport.editor.hash)
+                    .forElement(this.hash)
+                    .position(this.x, this.y)
+                    .push()
             })
             .apply()
     }

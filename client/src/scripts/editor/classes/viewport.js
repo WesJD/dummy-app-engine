@@ -1,6 +1,7 @@
 class Viewport {
-    constructor(element) {
+    constructor(element, editor) {
         this.element = element
+        this.editor = editor
         this.boxes = []
 
         const domElement = element.querySelectorAll(".element-box")

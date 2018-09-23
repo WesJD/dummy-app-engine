@@ -17,13 +17,16 @@ router.use(express.json())
 router.use((req, res, next) => {
     const project = req.session.projects.find(project => project.hash == req.query.project)
     if (project) {
-        const screen = project.screens.find(screen => screen.hash == req.query.screen)
-        if (screen) {
-            req.screen = screen
-            req.project = project
-            next()
-        } else res.status(400)
-    } else res.status(403)
+        req.project = project
+        if (req.method == "PUT") next()
+        else {
+            const screen = project.screens.find(screen => screen.hash == req.query.screen)
+            if (screen) {
+                req.screen = screen
+                next()
+            } else res.status(400).send()
+        }
+    } else res.status(403).send()
 })
 
 router.post("/", (req, res) => {
@@ -34,8 +37,52 @@ router.post("/", (req, res) => {
 
 router.put("/", (req, res) => {
     req.body.changes.forEach(change => {
-
+        const screen = req.project.screens.find(screen => screen.hash == change.screenHash)
+        if (screen) {
+            const element = screen.elements.find(element => element.hash == change.elementHash)
+            if (element) {
+                switch (change.action) {
+                    case "background":
+                        element.background = change.background
+                        mysql.query(
+                            `UPDATE elements SET background = ? WHERE hash = ?`,
+                            [change.background, element.hash],
+                            err => {
+                                if (err) debug("Couldn't update background for element", err)
+                            }
+                        )
+                        break
+                    case "resize":
+                        element.height = change.height
+                        element.width = change.width
+                        mysql.query(
+                            `UPDATE elements SET height = ?, width = ? WHERE hash = ?`,
+                            [element.height, element.width, element.hash],
+                            err => {
+                                if (err) debug("Couldn't resize element!", err)
+                            }
+                        )
+                        break
+                    case "position":
+                        element.x = change.x
+                        element.y = change.y
+                        mysql.query(
+                            `UPDATE elements SET x = ?, y = ? WHERE hash = ?`,
+                            [change.x, change.y, element.hash],
+                            err => {
+                                if (err) debug("Couldn't change position of element!", err)
+                            }
+                        )
+                        break
+                    default:
+                        res.status(403).send()
+                        break
+                }
+            } else res.status(400).send()
+        } else res.status(400).send()
     })
+    res.status(200).send()
+    req.session.save()
 })
 
 router.delete("/", (req, res) => {

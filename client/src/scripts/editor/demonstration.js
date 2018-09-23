@@ -1,8 +1,0 @@
-const Demonstration = {
-    start: () => {
-
-    },
-    cancel: () => {
-
-    }
-}

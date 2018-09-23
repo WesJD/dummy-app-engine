@@ -1,7 +1,5 @@
 const Page = {
     editors: [],
-    getCurrentEditor: () => Page.editor,
-    setCurrentEditor: editor => Page.editor = editor,
 
     screenViewHolders: [],
     getCurrentScreenView: () => Page.selectedScreenView,
@@ -23,5 +21,8 @@ const Page = {
 
         Page.editBar = new EditBar(document.querySelector(".navbar[role=editing]"))
         Page.screenViewHolders[0].select()
+
+        Page.projectHash = window.location.href.split("=")[1]
+        Page.changeQueue = new ChangeQueue()
     }
 }

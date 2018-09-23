@@ -14,7 +14,7 @@ class EditBar {
         const newScreen = this.newScreen = this.element.querySelector("#newScreen")
         newScreen.addEventListener("click", () => {
             fetch(
-                `/project/modify/screen?hash=${PROJECT_HASH}`,
+                `/project/modify/screen?hash=${Page.projectHash}`,
                 {
                     "method": "POST",
                     "credentials": "include"
@@ -37,9 +37,9 @@ class EditBar {
     setupNewElement() {
         const newElement = this.newElement = this.element.querySelector("#newElement")
         function createElement(type) {
-            const editor = Page.getCurrentEditor()
+            const editor = Page.editor
             fetch(
-                `/project/modify/element?project=${PROJECT_HASH}&screen=${editor.hash}&type=${type}`,
+                `/project/modify/element?project=${Page.projectHash}&screen=${editor.hash}&type=${type}`,
                 {
                     "method": "POST",
                     "credentials": "include"
@@ -69,14 +69,14 @@ class EditBar {
             },
             background: {
                 element: this.element.querySelector("#background"),
-                handler: () => Page.getCurrentEditor().viewport.selectedElement.box.backgroundModal.open()
+                handler: () => Page.editor.viewport.selectedElement.box.backgroundModal.open()
             },
             delete: {
                 element: this.element.querySelector("#delete"),
                 handler: () => {
-                    const selectedBox = Page.getCurrentEditor().viewport.selectedElement.box
+                    const selectedBox = Page.editor.viewport.selectedElement.box
                     fetch(
-                        `/project/modify/element?project=${PROJECT_HASH}&screen=${getCurrentEditorHash()}&element=${selectedBox.hash}`,
+                        `/project/modify/element?project=${Page.projectHash}&screen=${getCurrentEditorHash()}&element=${selectedBox.hash}`,
                         {
                             "method": "DELETE",
                             "credentials": "include"
